@@ -1,42 +1,59 @@
-package com.example.demo.controller;
+package com.example.demo.entity;
 
-import com.example.demo.entity.Departamento;
-import com.example.demo.service.DepartamentoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.time.LocalDate;
 
-import java.util.List;
-import java.util.Optional;
+@Entity(name = "Projeto")
+public class Projeto {
 
-@RestController
-@RequestMapping("/departamentos")
-public class DepartamentoController {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	@Autowired
-	private DepartamentoService departamentoService;
+	@Column(name = "nome_projeto")
+	private String nome;
 
-	@PostMapping
-	public ResponseEntity<Departamento> criarDepartamento(@RequestBody Departamento departamento) {
-		Departamento novoDepartamento = departamentoService.criarDepartamento(departamento);
-		return new ResponseEntity<>(novoDepartamento, HttpStatus.CREATED);
+	@Column(name = "data_inicio_projeto")
+	private LocalDate dataInicio;
+
+	@Column(name = "data_fim_projeto")
+	private LocalDate dataFim;
+
+	// Getters e Setters
+
+	public Long getId() {
+		return id;
 	}
 
-	@GetMapping
-	public List<Departamento> listarDepartamentos() {
-		return departamentoService.listarDepartamentos();
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Departamento> buscarDepartamentoPorId(@PathVariable Long id) {
-		Optional<Departamento> departamento = departamentoService.buscarDepartamentoPorId(id);
-		return departamento.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	public String getNome() {
+		return nome;
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletarDepartamento(@PathVariable Long id) {
-		departamentoService.deletarDepartamento(id);
-		return ResponseEntity.noContent().build();
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public LocalDate getDataInicio() {
+		return dataInicio;
+	}
+
+	public void setDataInicio(LocalDate dataInicio) {
+		this.dataInicio = dataInicio;
+	}
+
+	public LocalDate getDataFim() {
+		return dataFim;
+	}
+
+	public void setDataFim(LocalDate dataFim) {
+		this.dataFim = dataFim;
 	}
 }
